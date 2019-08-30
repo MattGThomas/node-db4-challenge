@@ -12,7 +12,7 @@ exports.up = function(knex) {
         .notNullable()
   })
   .createTable('instructions', tbl => {
-      tbl.increment();
+      tbl.increments();
       tbl.integer('instructions_number')
         .unsigned()
         .notNullable();
@@ -20,7 +20,8 @@ exports.up = function(knex) {
         .unsigned()
         .notNullable()
         .references('id')
-        .inTable('recipes')
+        .inTable('recipes');
+    tbl.string('instructions')
   })
   .createTable('rec_ingred', tbl => {
     tbl.integer('recipe_id')
@@ -33,6 +34,8 @@ exports.up = function(knex) {
         .notNullable()
         .references('id')
         .inTable('ingredients')
+    tbl.float('quantity')
+    tbl.primary(['recipe_id', 'ingredient_id'])
   })
 };
 
