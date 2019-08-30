@@ -8,7 +8,7 @@ module.exports = {
 
 // returns list of all recipes from database
 function getRecipes() {
-    return db(recipes)
+    return db('recipes')
 }
 
 // return list of items needed for each recipe

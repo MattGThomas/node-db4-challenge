@@ -16,16 +16,39 @@ router.get('/', (req, res) => {
     })
 })
 
-router.get('/:id/shoppinglist', (req, res) => {
-    Recipes.getShoppingList()
-    .then(shoppingList => {
-        res.status(200).json(shoppingList)
-    })
-    .catch(err => {
+router.get('/:id/shoppinglist', async (req, res) => {
+    const { id } = req.params
+
+    try {
+        const shoppingList = await Recipes.getShoppingList(id)
+
+        if(shoppingList && shoppingList.length > 0) {
+            res.status(200).json(shoppingList)
+        } else {
+            res.status(404).json({
+                message: 'can not get shopping list with given id'
+            })
+        }
+    } catch (err) {
         res.status(500).json({
-            message: 'could not get the shoppig list'
+            message: 'there was an error retrieving the shopping list'
         })
-    })
+    }
+    // Recipes.getShoppingList(id)
+    // .then(shoppingList => {
+    //     if (shoppingList) {
+    //         res.json(shoppingList)
+    //     } else {
+    //         res.status(404).json({
+    //             message: 'could not find shopping list with the given id'
+    //         })
+    //     }
+    // })
+    // .catch(err => {
+    //     res.status(500).json({
+    //         message: 'could not get the shopping list'
+    //     })
+    // })
 })
 
 router.get('/:id/instructions', (req, res) => {
@@ -39,3 +62,5 @@ router.get('/:id/instructions', (req, res) => {
         })
     })
 })
+
+module.exports = router
